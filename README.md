@@ -1,6 +1,19 @@
 # oh-slurm-eval
 A primer on running various eval frameworks for LLMs on slurm based clusters and specifically Euler at ETH and Science Cluster at UZH
 
+## GPU based and Space based optimizations 
+```
+# Load the required modules
+module load stack/2024-06 eth_proxy python/3.12.8 cuda/12.4.1
+source /cluster/---/---/you/venv/bin/activate
+export HF_HOME=/cluster/scratch/you/
+export HF_DATASETS_CACHE="/cluster/scratch/you/datasets"
+export TRITON_CACHE_DIR="/cluster/scratch/you/triton"
+export FLASHINFER_WORKSPACE_DIR="/cluster/scratch/you/flash_infer_workspace"
+export VLLM_ATTENTION_BACKEND="FLASH_ATTN"
+# Reduce VRAM usage by reducing fragmentation
+export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+```
 
 ## How to use custom chat templates or even the official instruct tuned templates for Base models?
 You have two options - `--input_template`
