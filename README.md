@@ -80,3 +80,8 @@ This notation usually means evaluating "pass@1" out of 32 samples.
 ### SuperGPQA
 Needs significant changes to get it to work. Detailed report coming soon...
 
+**Setup and Running**
+
+**Evaluating on a Subset**
+
+
