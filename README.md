@@ -4,17 +4,20 @@ A primer on running various eval frameworks for LLMs on slurm based clusters and
 ## GPU based and Space based optimizations 
 ```
 # Load the required modules
-module load stack/2024-06 eth_proxy python/3.12.8 cuda/12.4.1
+module load stack/2024-06 eth_proxy python/3.12.8 cuda/12.4.1 git-lfs
+
+# Activate your environment
 source /cluster/---/---/you/venv/bin/activate
 export HF_HOME=/cluster/scratch/you/
 export HF_DATASETS_CACHE="/cluster/scratch/you/datasets"
 export TRITON_CACHE_DIR="/cluster/scratch/you/triton"
 export FLASHINFER_WORKSPACE_DIR="/cluster/scratch/you/flash_infer_workspace"
 export VLLM_ATTENTION_BACKEND="FLASH_ATTN"
+
 # Reduce VRAM usage by reducing fragmentation
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 ```
-
+# OpenRLHF Training
 ## How to use custom chat templates or even the official instruct tuned templates for Base models?
 You have two options - `--input_template` Or use `--tokenizer_chat_template`. The first one is simple and the second one allows you to use the official templates.
 ```
@@ -23,3 +26,29 @@ You have two options - `--input_template` Or use `--tokenizer_chat_template`. Th
 where you can copy paste the template from the config files of instruct tuned models from Huggingface
 
 Qwen comes with chat templates even for Base models so using `--apply_chat_template` will just work. But Gemma or Llama base models will complain. In those cases its super helpful while training them.
+
+
+## Coming Up
+
+- [ ] Reward Model Evaluations
+
+## Working
+
+### Manual
+- [v] Function Call based eval
+- [v] Fine Tuned Generation Parse eval
+
+### Nemo Skills
+It all started with Issue , and now its a framework that I like the most :)
+
+**Evals Supported**
+...
+
+
+### Skythought
+**Evals Supported**
+...
+
+### SuperGPQA
+Needs significant changes to get it to work. Detailed report coming soon...
+
