@@ -17,6 +17,7 @@ export VLLM_ATTENTION_BACKEND="FLASH_ATTN"
 # Reduce VRAM usage by reducing fragmentation
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 ```
+
 # OpenRLHF Training
 ## How to use custom chat templates or even the official instruct tuned templates for Base models?
 You have two options - `--input_template` Or use `--tokenizer_chat_template`. The first one is simple and the second one allows you to use the official templates.
@@ -39,7 +40,34 @@ Qwen comes with chat templates even for Base models so using `--apply_chat_templ
 - [v] Fine Tuned Generation Parse eval
 
 ### Nemo Skills
-It all started with Issue , and now its a framework that I like the most :)
+Its a framework that I like the most :)
+
+**How to use?**
+Coming soon...
+
+**Understanding the metrics**
+### 1. Greedy Decoding
+**Greedy decoding** is a method for generating text from a language model where, at each step, the model selects the token (word or symbol) with the highest probability as the next output. It does not consider alternative possibilities or look ahead, so it is "greedy" in always picking the immediate best option.  
+- **In math benchmarks:** Greedy decoding produces a single answer for each problem, representing the model's most confident response.
+
+### 2. pass@32
+**pass@32** is a metric that measures the probability that at least one of 32 sampled outputs (solutions) from the model is correct.
+- **How it works:** For each math problem, the model generates 32 candidate solutions (using stochastic decoding, e.g., sampling with temperature).
+- **The metric:** If at least one of those 32 outputs is correct, it is considered a "pass" for that problem.
+- **Purpose:** This metric estimates how likely it is that the model can solve a problem if given 32 chances.
+
+### 3. majority@32
+**majority@32** evaluates the result by looking at the 32 sampled outputs and selecting the answer that appears most frequently (the "majority" answer).
+- **How it works:** The model generates 32 outputs for each problem. The answer occurring most often among those is chosen as the model's final answer.
+- **The metric:** If this majority answer is correct, the problem is counted as solved.
+- **Purpose:** This reflects the model's consistency and likely "best guess" when allowed to answer multiple times.
+
+### 4. pass@1[32] (often written as pass@1 or pass@1[32])
+This notation usually means evaluating "pass@1" out of 32 samples.
+- **How it works:** For each problem, the model samples 32 outputs, but only the first output is evaluated.
+- **The metric:** If the first output is correct, the problem is considered solved.
+- **Purpose:** This is equivalent to single-shot evaluation on a batch of 32, measuring the model's immediate accuracy without retries.
+- **Note:** Sometimes "pass@1[32]" can also mean running 32 independent single-sample generations and averaging the pass rates.
 
 **Evals Supported**
 ...
